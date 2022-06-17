@@ -1,4 +1,4 @@
 #!/bin/sh
 
-polybar-msg cmd quit
+killall polybar
 polybar --config=~/.config/polybar/config.ini topbar

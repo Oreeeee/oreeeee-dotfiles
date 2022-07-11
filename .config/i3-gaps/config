@@ -3,15 +3,34 @@
 # Set variables
 set $mod Mod4
 set $term alacritty
-set $font Ubuntu 10
-set $plauncher dmenu_run
-set $wallpath ~/wallpaper.png
+set $font JetBrains Mono 8
+set $menu dmenu_run
+set $wallpaper ~/wallpaper.png
 
 font pango:$font
 
-# Start XDG autostart .desktop files using dex. See also
-# https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex --autostart --environment i3
+
+########################################
+# SET NORD COLORS                      #
+########################################
+
+client.focused          #4c566a  #4c566a  #eceff4 #458588   #4c566a
+client.focused_inactive #3b4252  #3b4252  #eceff4 #4c566a   #282828
+client.unfocused        #2e3440  #2e3440  #eceff4 #2e3440   #2e3440
+client.urgent           #bf616a  #bf616a  #2e3440 #d08770   #bf616a
+client.placeholder      #000000  #0c0c0c  #eceff4 #000000   #0c0c0c
+
+client.background       #2e3440
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# nm-applet
+exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -29,8 +48,8 @@ bindsym $mod+Return exec $term
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id $plauncher
+# start menu
+bindsym $mod+d exec --no-startup-id $menu
 
 # change focus
 bindsym $mod+j focus left
@@ -153,26 +172,19 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Dracula theme
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-client.background       #F8F8F2
-
-# Start Polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh
-
 # Set wallpaper
-exec_always --no-startup-id feh --bg-scale $wallpath
+exec_always --no-startup-id feh --bg-scale $wallpaper
 
-# Set default border size
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+}
+
+# Set border
 default_border pixel 2
 default_floating_border pixel 2
 
-# Add gaps
+# Set gaps
 gaps inner 4
-gaps outer 0
+gaps outer 4
